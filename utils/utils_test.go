@@ -126,3 +126,20 @@ func TestIsValidValue(t *testing.T) {
 		}
 	}
 }
+
+func TestLeftPadBytes(t *testing.T) {
+	var isvalid, expected bool
+
+	var leftpadedbytes = []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 39, 210, 40, 144, 88, 124, 250, 218, 127, 236,
+		36, 124, 81, 128, 215, 61, 230, 198, 112, 196}
+
+	resultbytes := LeftPadBytes(addressbytes, 32)
+	if bytes.Compare(resultbytes, leftpadedbytes) == 0 {
+		isvalid = true
+	}
+	expected = true
+	if isvalid != expected {
+		t.Errorf("got %v, wanted %v", isvalid, expected)
+	}
+}

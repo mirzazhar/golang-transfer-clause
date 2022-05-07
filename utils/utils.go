@@ -75,3 +75,15 @@ func IsValidValue(str string) bool {
 	}
 	return true
 }
+
+// leftPadBytes places the number of zeros to left side
+// according to the given length.
+func LeftPadBytes(data []byte, length int) []byte {
+	if length <= len(data) {
+		return data
+	}
+
+	paddbytes := make([]byte, length)
+	copy(paddbytes[length-len(data):], data)
+	return paddbytes
+}
