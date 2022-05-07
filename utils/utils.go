@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"regexp"
+	"strings"
 )
 
 // AddresstoBytes converts the given Ethereum-based account address.
@@ -43,4 +44,34 @@ func IsValidAddress(address string) bool {
 	regexaddr := regexp.MustCompile("^[0-9a-fA-F]{40}$")
 	isValidaddr := regexaddr.MatchString(address)
 	return isValidaddr
+}
+
+// IsValidDecimalValue validates only integer value
+// (non decimal point).
+func IsValidDecimalValue(str string) bool {
+	if len(str) == 0 {
+		return false
+	}
+	for _, char := range str {
+		if char < '0' || char > '9' {
+			return false
+		}
+	}
+	return true
+}
+
+// IsValidValue validaes any non-empty value e.g. integer
+// or with decimal point.
+func IsValidValue(str string) bool {
+	if len(str) == 0 {
+		return false
+	}
+	for _, char := range str {
+		if char < '0' || char > '9' {
+			if char != '.' || strings.Count(str, ".") > 1 {
+				return false
+			}
+		}
+	}
+	return true
 }

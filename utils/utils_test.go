@@ -68,3 +68,61 @@ func TestAddresstoBytes(t *testing.T) {
 		}
 	}
 }
+
+var correctdecimalvalue = []string{
+	"3", "78", "99", "215", "1000000000000000000",
+}
+
+var wrongdecimalvalue = []string{
+	"0x3", "", "3.3", "0.2", "0xff", "00.5", "55.55",
+	"00.001", "efb2", "8.007", "70.007", "666.666",
+}
+
+func TestIsValidDecimalValue(t *testing.T) {
+	for _, wrongvalue := range wrongdecimalvalue {
+		var isvalid, expected bool
+		isvalid = IsValidDecimalValue(wrongvalue)
+		expected = false
+		if isvalid != expected {
+			t.Errorf("got %v, wanted %v", isvalid, expected)
+		}
+	}
+
+	for _, correctvalue := range correctdecimalvalue {
+		var isvalid, expected bool
+		isvalid = IsValidDecimalValue(correctvalue)
+		expected = true
+		if isvalid != expected {
+			t.Errorf("got %v, wanted %v", isvalid, expected)
+		}
+	}
+}
+
+var wrongvalues = []string{
+	"0x3", "", "00.00.1", "10.2.2", "0xff", "efb2",
+}
+
+var correctvalues = []string{
+	"3", "0.999", "5.2", "2", "1.002", "00.5", "88.95",
+	"00.001", "9.9", "8.007", "0.007", "9045.5", "55.55",
+}
+
+func TestIsValidValue(t *testing.T) {
+	for _, wrongvalue := range wrongvalues {
+		var isvalid, expected bool
+		isvalid = IsValidValue(wrongvalue)
+		expected = false
+		if isvalid != expected {
+			t.Errorf("got %v, wanted %v", isvalid, expected)
+		}
+	}
+
+	for _, correctvalue := range correctvalues {
+		var isvalid, expected bool
+		isvalid = IsValidValue(correctvalue)
+		expected = true
+		if isvalid != expected {
+			t.Errorf("got %v, wanted %v", isvalid, expected)
+		}
+	}
+}
