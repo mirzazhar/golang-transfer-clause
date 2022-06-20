@@ -1,5 +1,28 @@
 package clause
 
+import "github.com/mirzazhar/golang-transfer-clause/utils"
+
+// Clause represents the transfer information used by a transaction
+// within an ethereum or ethereum-based fork.
+type Clause struct {
+	ClauseBody
+}
+
+// GetToAddress method returns the receiver address.
+func (cl *Clause) GetToAddress() string {
+	return cl.to
+}
+
+// GetValue method returns the value.
+func (cl *Clause) GetValue() string {
+	return cl.value
+}
+
+// GetData method returns the arbitrary data.
+func (cl *Clause) GetData() string {
+	return cl.data
+}
+
 // ClauseBody holds the necessary transfer information to be used by
 // a transaction like a receiver address, amount, and arbitrary data.
 type ClauseBody struct {
@@ -29,4 +52,15 @@ func (cb *ClauseBody) AddValue(value string) *ClauseBody {
 func (cb *ClauseBody) AddData(data string) *ClauseBody {
 	cb.data = data
 	return cb
+}
+
+// Build validates its underlying instance and then creates the
+// new instance of Clause.
+func (cb *ClauseBody) Build() (*Clause, error) {
+	if !utils.IsValidAddress(cb.to) {
+		return nil, utils.ErrToAddress
+	} else if !utils.IsValidValue(cb.value) {
+		return nil, utils.ErrValue
+	}
+	return &Clause{ClauseBody: *cb}, nil
 }
