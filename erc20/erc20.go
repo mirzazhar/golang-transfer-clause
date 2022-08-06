@@ -2,6 +2,13 @@ package erc20
 
 import "github.com/mirzazhar/golang-transfer-clause/utils"
 
+// ERC20Transform is a custom type. It only accepts values that have
+// GetToAddress and GetValue methods.
+type ERC20Transform interface {
+	GetToAddress() string
+	GetValue() string
+}
+
 // ERC20Body holds the necessary transfer information to be used by a
 // transaction that will interact with the ERC20-based token standard.
 type ERC20Body struct {
@@ -26,18 +33,27 @@ func (eb *ERC20Body) AddValue(value string) *ERC20Body {
 	return eb
 }
 
+// Init creates an instance of ERC20Body using any type that implements
+// ERC20Transform interface.
+func Init(erc20 ERC20Transform) *ERC20Body {
+	return &ERC20Body{
+		to:    erc20.GetToAddress(),
+		value: erc20.GetValue(),
+	}
+}
+
 // AddTokenAddress adds the contract address of the ERC20-based standard
 // token.
-func (b *ERC20Body) AddTokenAddress(tokenAddr string) *ERC20Body {
-	b.tokenAddress = tokenAddr
-	return b
+func (eb *ERC20Body) AddTokenAddress(tokenAddr string) *ERC20Body {
+	eb.tokenAddress = tokenAddr
+	return eb
 }
 
 // AddData adds an account address. Later on, this address will use as a
 // parameter for ERC20-based token methods: approve and tokentransferfrom.
-func (b *ERC20Body) AddData(data string) *ERC20Body {
-	b.data = data
-	return b
+func (eb *ERC20Body) AddData(data string) *ERC20Body {
+	eb.data = data
+	return eb
 }
 
 // Build validates its underlying instance and then creates the
