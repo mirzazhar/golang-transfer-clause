@@ -84,3 +84,27 @@ func (erc *ERC20Clause) GetTokenAddress() string {
 func (erc *ERC20Clause) GetToAddress() string {
 	return erc.to
 }
+
+// TokenName returns the payload of the token name for the ERC-20-based getter.
+func (erc *ERC20Clause) TokenName() []byte {
+	data := erc20methodIDs[name]
+	return data[:]
+}
+
+// TokenSymbol returns the payload of the token symbol for the ERC-20-based getter.
+func (erc *ERC20Clause) TokenSymbol() []byte {
+	data := erc20methodIDs[symbol]
+	return data[:]
+}
+
+// TokenDecimals returns the payload of the token decimals for the ERC-20-based getter.
+func (erc *ERC20Clause) TokenDecimals() []byte {
+	data := erc20methodIDs[decimals]
+	return data[:]
+}
+
+// TokenTotalSupply returns the payload of total supply for the ERC-20-based getter.
+func (erc *ERC20Clause) TokenTotalSupply() []byte {
+	data := erc20methodIDs[totalSupply]
+	return data[:]
+}

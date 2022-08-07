@@ -1,6 +1,7 @@
 package erc20
 
 import (
+	"encoding/hex"
 	"reflect"
 	"testing"
 )
@@ -35,5 +36,65 @@ func TestCreateClause(t *testing.T) {
 
 	if !reflect.DeepEqual(erc20clause, expectederc20clause) {
 		t.Errorf("got %v, wanted %v", erc20clause, expectederc20clause)
+	}
+}
+
+func TestName(t *testing.T) {
+	erc20clause, err := createERC20Clause()
+	if err != nil {
+		t.Errorf("cannot create erc20clause: %v", err)
+	}
+
+	payloaddata := erc20clause.TokenName()
+	hexvaluepayload := hex.EncodeToString(payloaddata)
+	expected := "06fdde03"
+
+	if hexvaluepayload != expected {
+		t.Errorf("got %v, wanted %v", payloaddata, expected)
+	}
+}
+
+func TestSymbol(t *testing.T) {
+	erc20clause, err := createERC20Clause()
+	if err != nil {
+		t.Errorf("cannot create erc20clause: %v", err)
+	}
+
+	payloaddata := erc20clause.TokenSymbol()
+	hexvaluepayload := hex.EncodeToString(payloaddata)
+	expected := "95d89b41"
+
+	if hexvaluepayload != expected {
+		t.Errorf("got %v, wanted %v", hexvaluepayload, expected)
+	}
+}
+
+func TestDecimals(t *testing.T) {
+	erc20clause, err := createERC20Clause()
+	if err != nil {
+		t.Errorf("cannot create erc20clause: %v", err)
+	}
+
+	payloaddata := erc20clause.TokenDecimals()
+	hexvaluepayload := hex.EncodeToString(payloaddata)
+	expected := "313ce567"
+
+	if hexvaluepayload != expected {
+		t.Errorf("got %v, wanted %v", hexvaluepayload, expected)
+	}
+}
+
+func TestTotalSupply(t *testing.T) {
+	erc20clause, err := createERC20Clause()
+	if err != nil {
+		t.Errorf("cannot create erc20clause: %v", err)
+	}
+
+	payloaddata := erc20clause.TokenTotalSupply()
+	hexvaluepayload := hex.EncodeToString(payloaddata)
+	expected := "18160ddd"
+
+	if hexvaluepayload != expected {
+		t.Errorf("got %v, wanted %v", hexvaluepayload, expected)
 	}
 }
