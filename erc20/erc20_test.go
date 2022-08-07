@@ -98,3 +98,40 @@ func TestTotalSupply(t *testing.T) {
 		t.Errorf("got %v, wanted %v", hexvaluepayload, expected)
 	}
 }
+
+func TestBalance(t *testing.T) {
+	erc20clause, err := createERC20Clause()
+	if err != nil {
+		t.Errorf("cannot create erc20clause: %v", err)
+	}
+
+	payloaddata, err := erc20clause.TokenBalance()
+	if err != nil {
+		t.Errorf("cannot create payload data for token balance: %v", err)
+	}
+
+	hexvaluepayload := hex.EncodeToString(payloaddata)
+	expected := "70a0823100000000000000000000000027d22890587cfada7fec247c5180d73de6c670c4"
+	if hexvaluepayload != expected {
+		t.Errorf("got %v, wanted %v", hexvaluepayload, expected)
+	}
+}
+
+func TestTransfer(t *testing.T) {
+	erc20clause, err := createERC20Clause()
+	if err != nil {
+		t.Errorf("cannot create erc20clause: %v", err)
+	}
+
+	erc20clause.AddValue("50000000000000000000")
+	payloaddata, err := erc20clause.TokenTranfer()
+	if err != nil {
+		t.Errorf("cannot create payload data for token transfer: %v", err)
+	}
+
+	hexvaluepayload := hex.EncodeToString(payloaddata)
+	expected := "a9059cbb00000000000000000000000027d22890587cfada7fec247c5180d73de6c670c4000000000000000000000000000000000000000000000002b5e3af16b1880000"
+	if hexvaluepayload != expected {
+		t.Errorf("got %v, wanted %v", hexvaluepayload, expected)
+	}
+}

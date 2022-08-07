@@ -114,6 +114,20 @@ func (erc *ERC20Clause) TokenTotalSupply() []byte {
 	return data[:]
 }
 
+// TokenBalance returns the payload of token balance for the ERC-20-based getter.
+func (erc *ERC20Clause) TokenBalance() ([]byte, error) {
+	return erc.payload(balance, erc.to)
+}
+
+// TokenTranfer returns the payload of token transfer for the ERC-20-based method.
+func (erc *ERC20Clause) TokenTranfer() ([]byte, error) {
+	payload, err := erc.payload(transfer, erc.to)
+	if err != nil {
+		return nil, err
+	}
+	return erc.extendPayload(payload)
+}
+
 // payload creates the actual data array to be used to interact with the ERC-20-based
 // token standard.
 func (erc *ERC20Clause) payload(method, account string) ([]byte, error) {
