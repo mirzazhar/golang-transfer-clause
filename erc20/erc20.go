@@ -1,6 +1,11 @@
 package erc20
 
-import "github.com/mirzazhar/golang-transfer-clause/utils"
+import (
+	"errors"
+	"math/big"
+
+	"github.com/mirzazhar/golang-transfer-clause/utils"
+)
 
 // ERC20Transform is a custom type. It only accepts values that have
 // GetToAddress and GetValue methods.
@@ -107,4 +112,34 @@ func (erc *ERC20Clause) TokenDecimals() []byte {
 func (erc *ERC20Clause) TokenTotalSupply() []byte {
 	data := erc20methodIDs[totalSupply]
 	return data[:]
+}
+
+// payload creates the actual data array to be used to interact with the ERC-20-based
+// token standard.
+func (erc *ERC20Clause) payload(method, account string) ([]byte, error) {
+	address, err := utils.AddresstoBytes(account)
+	if err != nil {
+		return nil, err
+	}
+
+	paddedAddress := utils.LeftPadBytes(address, 32)
+	methodID := erc20methodIDs[method]
+
+	var data []byte
+	data = append(data, methodID[:]...)
+	data = append(data, paddedAddress...)
+	return data, nil
+}
+
+// extendPayload extends the functionality of the payload method, particularly when three
+// or more values are required to complete the payload for the ERC-20-based token standard.
+func (erc *ERC20Clause) extendPayload(payload []byte) ([]byte, error) {
+	amount, ok := new(big.Int).SetString(erc.value, 10)
+	if !ok {
+		return nil, errors.New("error in converting string based value to big integers")
+	}
+
+	paddedAmount := utils.LeftPadBytes(amount.Bytes(), 32)
+	payload = append(payload, paddedAmount...)
+	return payload, nil
 }
