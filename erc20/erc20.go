@@ -116,22 +116,50 @@ func (erc *ERC20Clause) TokenTotalSupply() []byte {
 
 // TokenBalance returns the payload of token balance for the ERC-20-based getter.
 func (erc *ERC20Clause) TokenBalance() ([]byte, error) {
-	return erc.payload(balance, erc.to)
+	return erc.payload(balance)
 }
 
 // TokenTranfer returns the payload of token transfer for the ERC-20-based method.
 func (erc *ERC20Clause) TokenTranfer() ([]byte, error) {
-	payload, err := erc.payload(transfer, erc.to)
+	payload, err := erc.payload(transfer)
 	if err != nil {
 		return nil, err
 	}
 	return erc.extendPayload(payload)
 }
 
+// TokenApprove returns the payload of tokens to approve for the ERC-20-based method.
+func (erc *ERC20Clause) TokenApprove() ([]byte, error) {
+	payload, err := erc.payload(approve)
+	if err != nil {
+		return nil, err
+	}
+
+	return erc.extendPayload(payload)
+}
+
+// TokenTransferFrom returns the payload of "token transfer from the address of token
+// approved to another address" for the ERC-20-based method.
+func (erc *ERC20Clause) TokenTransferFrom(from string) ([]byte, error) {
+	payload, err := erc.payload(transferFrom)
+	if err != nil {
+		return nil, err
+	}
+
+	toaddress, err := utils.AddresstoBytes(from)
+	if err != nil {
+		return nil, err
+	}
+
+	paddedAddress := utils.LeftPadBytes(toaddress, 32)
+	payload = append(payload, paddedAddress...)
+	return erc.extendPayload(payload)
+}
+
 // payload creates the actual data array to be used to interact with the ERC-20-based
 // token standard.
-func (erc *ERC20Clause) payload(method, account string) ([]byte, error) {
-	address, err := utils.AddresstoBytes(account)
+func (erc *ERC20Clause) payload(method string) ([]byte, error) {
+	address, err := utils.AddresstoBytes(erc.to)
 	if err != nil {
 		return nil, err
 	}
