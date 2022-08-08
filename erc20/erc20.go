@@ -156,6 +156,23 @@ func (erc *ERC20Clause) TokenTransferFrom(from string) ([]byte, error) {
 	return erc.extendPayload(payload)
 }
 
+// TokenAllowance returns the payload to find the remaining number of allowed tokens for
+// the ERC-20-based getters.
+func (erc *ERC20Clause) TokenAllowance(owner string) ([]byte, error) {
+	payload, err := erc.payload(allowance)
+	if err != nil {
+		return nil, err
+	}
+
+	toaddress, err := utils.AddresstoBytes(owner)
+	if err != nil {
+		return nil, err
+	}
+
+	paddedAddress := utils.LeftPadBytes(toaddress, 32)
+	return append(payload, paddedAddress...), nil
+}
+
 // payload creates the actual data array to be used to interact with the ERC-20-based
 // token standard.
 func (erc *ERC20Clause) payload(method string) ([]byte, error) {
