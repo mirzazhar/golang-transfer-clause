@@ -202,3 +202,49 @@ func (erc *ERC20Clause) extendPayload(payload []byte) ([]byte, error) {
 	payload = append(payload, paddedAmount...)
 	return payload, nil
 }
+
+// GetERCPayloadData returns the payload of the given method in a byte array. Moreover, purposely,
+// it can be called from outside this package or through the interface.
+func (erc *ERC20Clause) GetERCPayloadData(method string) ([]byte, error) {
+	var data []byte
+	var err error
+
+	switch method {
+	case "name":
+		data = erc.TokenName()
+	case "symbol":
+		data = erc.TokenSymbol()
+	case "totalSupply":
+		data = erc.TokenTotalSupply()
+	case "decimals":
+		data = erc.TokenDecimals()
+	case "balanceOf":
+		data, err = erc.TokenBalance()
+		if err != nil {
+			return nil, err
+		}
+	case "transfer":
+		data, err = erc.TokenTranfer()
+		if err != nil {
+			return nil, err
+		}
+	case "approve":
+		data, err = erc.TokenApprove()
+		if err != nil {
+			return nil, err
+		}
+	case "transferFrom":
+		data, err = erc.TokenTransferFrom(erc.data)
+		if err != nil {
+			return nil, err
+		}
+	case "allowance":
+		data, err = erc.TokenAllowance(erc.data)
+		if err != nil {
+			return nil, err
+		}
+	default:
+		return nil, errors.New("this method is not defined :" + method)
+	}
+	return data, nil
+}
