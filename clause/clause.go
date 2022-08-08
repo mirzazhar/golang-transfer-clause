@@ -1,6 +1,33 @@
 package clause
 
-import "github.com/mirzazhar/golang-transfer-clause/utils"
+import (
+	"encoding/hex"
+
+	"github.com/mirzazhar/golang-transfer-clause/utils"
+)
+
+// ClauseTransform is a custom type. It only accepts values that have GetTokenAddress
+// and GetERCPayloadData methods.
+type ClauseTransform interface {
+	GetTokenAddress() string
+	GetERCPayloadData(string) ([]byte, error)
+}
+
+// NewClause creates an instance of Clause using any type that implements the
+// ClauseTransform interface.
+func NewClause(t ClauseTransform, method string) (*Clause, error) {
+	data, err := t.GetERCPayloadData(method)
+	if err != nil {
+		return nil, err
+	}
+
+	clausebody := &ClauseBody{
+		to:    t.GetTokenAddress(),
+		value: "0",
+		data:  hex.EncodeToString(data),
+	}
+	return clausebody.Build()
+}
 
 // Clause represents the transfer information used by a transaction
 // within an ethereum or ethereum-based fork.
