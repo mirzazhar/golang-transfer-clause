@@ -38,3 +38,59 @@ Other popular approaches for interacting with ERC-based token smart contracts ex
 ```sh
 go get -u github.com/mirzazhar/golang-transfer-clause
 ```
+## Usage
+
+### Transfer Clause
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/mirzazhar/golang-transfer-clause/clause"
+)
+
+func main() {
+	var address string = "0x27d22890587cfada7fec247c5180d73de6c670c4"
+
+	clause, err := clause.
+		New().
+		AddToAddress(address).
+		AddValue("0.5").
+		Build()
+
+	if err != nil {
+		fmt.Printf("cannot create clause: %v", err)
+	}
+	fmt.Println("Transfer Clause: ", clause)
+}
+
+```
+### ERC-20 Based Transfer Clause
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/mirzazhar/golang-transfer-clause/erc20"
+)
+
+func main() {
+	var address string = "0x27d22890587cfada7fec247c5180d73de6c670c4"
+	var contractAddress string = "0xf6fe970533fe5C63d196139B14522Eb2956f8621"
+
+	erc20Clause, err := erc20.
+		New().
+		AddToAddress(address).
+		AddValue("1000000000000000000"). // value is given in "Wei" that is equal to 1 eth (ethereum).
+		AddTokenAddress(contractAddress).
+		Build()
+	if err != nil {
+		fmt.Printf("cannot create erc-20 based clause: %v", err)
+	}
+	fmt.Println("ERC-20 based Transfer Clause: ", erc20Clause)
+}
+
+
+```
