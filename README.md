@@ -58,7 +58,6 @@ func main() {
 		AddToAddress(address).
 		AddValue("0.5").
 		Build()
-
 	if err != nil {
 		fmt.Printf("cannot create clause: %v", err)
 	}
@@ -92,5 +91,47 @@ func main() {
 	fmt.Println("ERC-20 based Transfer Clause: ", erc20Clause)
 }
 
-
+```
+### ERC-20 Based Payload Preparation
+#### ERC-20 Token Name
+```go
+	namePayload, err := erc20Clause.GetERCPayloadData("name")
+	if err != nil {
+		fmt.Printf("cannot create pyaload for name: %v", err)
+	}
+	fmt.Println("erc20 name payload: ",
+		hex.EncodeToString(namePayload))
+```
+or
+```go
+	namePayload := erc20Clause.TokenName()
+	fmt.Println("erc20 name payload: ", hex.EncodeToString(namePayload))
+```
+#### ERC-20 Token Symbol
+```go
+	symbolPayload, err := erc20Clause.GetERCPayloadData("symbol")
+	if err != nil {
+		fmt.Printf("cannot create pyaload for symbol: %v", err)
+	}
+	fmt.Println("erc20 symbol payload: ",
+		hex.EncodeToString(symbolPayload))
+```
+or
+```go
+	symbolPayload := erc20Clause.TokenSymbol()
+	fmt.Println("erc20 symbol payload: ", hex.EncodeToString(symbolPayload))
+```
+#### ERC-20 Token TotalSupply
+```go
+	totalSupplyPayload, err := erc20Clause.GetERCPayloadData("totalSupply")
+	if err != nil {
+		fmt.Printf("cannot create pyaload for totalSupply: %v", err)
+	}
+	fmt.Println("erc20 totalSupply payload: ",
+		hex.EncodeToString(totalSupplyPayload))
+```
+or
+```go
+	totalSupplyPayload := erc20Clause.TokenTotalSupply()
+	fmt.Println("erc20 totalSupply payload: ", hex.EncodeToString(totalSupplyPayload))
 ```
