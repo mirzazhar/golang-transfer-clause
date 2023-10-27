@@ -135,3 +135,51 @@ or
 	totalSupplyPayload := erc20Clause.TokenTotalSupply()
 	fmt.Println("erc20 totalSupply payload: ", hex.EncodeToString(totalSupplyPayload))
 ```
+#### ERC-20 Token Decimals
+```go
+	decimalsPayload, err := erc20Clause.GetERCPayloadData("decimals")
+	if err != nil {
+		fmt.Printf("cannot create pyaload for decimals: %v", err)
+	}
+	fmt.Println("erc20 decimals payload: ",
+		hex.EncodeToString(decimalsPayload))
+```
+or
+```go
+	decimalsPayload := erc20Clause.TokenDecimals()
+	fmt.Println("erc20 decimals payload: ", hex.EncodeToString(decimalsPayload))
+```
+#### ERC-20 Token BalanceOf
+```go
+	balancePayload, err := erc20Clause.GetERCPayloadData("balanceOf")
+	if err != nil {
+		fmt.Printf("cannot create pyaload for balanceOf: %v", err)
+	}
+	fmt.Println("erc20 balanceOf payload: ",
+		hex.EncodeToString(balancePayload))
+```
+or
+```go
+	balancePayload, err := erc20Clause.TokenBalance()
+	if err != nil {
+		fmt.Printf("cannot create pyaload for balanceOf: %v", err)
+	}
+	fmt.Println("erc20 balanceOf payload: ", hex.EncodeToString(balancePayload))
+```
+#### ERC-20 Token Transfer
+```go
+	transferPayload, err := erc20Clause.GetERCPayloadData("transfer")
+	if err != nil {
+		fmt.Printf("cannot create pyaload for transfer: %v", err)
+	}
+	fmt.Println("erc20 transfer payload: ",
+		hex.EncodeToString(transferPayload))
+```
+or
+```go
+	transferPayload, err := erc20Clause.TokenTranfer()
+	if err != nil {
+		fmt.Printf("cannot create pyaload for transfer: %v", err)
+	}
+	fmt.Println("erc20 transfer payload: ", hex.EncodeToString(transferPayload))
+```
