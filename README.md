@@ -183,3 +183,61 @@ or
 	}
 	fmt.Println("erc20 transfer payload: ", hex.EncodeToString(transferPayload))
 ```
+#### ERC-20 Token Approve
+
+```go
+	approvePayload, err := erc20Clause.GetERCPayloadData("approve")
+	if err != nil {
+		fmt.Printf("cannot create pyaload for approve: %v", err)
+	}
+	fmt.Println("erc20 approve payload: ",
+		hex.EncodeToString(approvePayload))
+```
+or
+```go
+	approvePayload, err := erc20Clause.TokenApprove()
+	if err != nil {
+		fmt.Printf("cannot create pyaload for approve: %v", err)
+	}
+	fmt.Println("erc20 approve payload: ", hex.EncodeToString(approvePayload))
+```
+#### ERC-20 Token TransferFrom
+```go
+	fromaddress := "0x0bf4A8E0D09C3B16Bb6B90362Bc4218589b0a567"
+	erc20Clause.AddData(fromaddress)
+
+	transferFromPayload, err := erc20Clause.GetERCPayloadData("transferFrom")
+	if err != nil {
+		fmt.Printf("cannot create pyaload for transferFrom: %v", err)
+	}
+	fmt.Println("erc20 transferFrom payload: ",
+		hex.EncodeToString(transferFromPayload))
+```
+or
+```go
+	transferFromPayload, err := erc20Clause.TokenTransferFrom(fromaddress)
+	if err != nil {
+		fmt.Printf("cannot create pyaload for transferFrom: %v", err)
+	}
+	fmt.Println("erc20 transferFrom payload: ", hex.EncodeToString(transferFromPayload))
+```
+#### ERC-20 Token Allowance
+```go
+	fromaddress := "0x0bf4A8E0D09C3B16Bb6B90362Bc4218589b0a567"
+	erc20Clause.AddData(fromaddress)
+
+	allowancePayload, err := erc20Clause.GetERCPayloadData("allowance")
+	if err != nil {
+		fmt.Printf("cannot create pyaload for allowance: %v", err)
+	}
+	fmt.Println("erc20 allowance payload: ",
+		hex.EncodeToString(allowancePayload))
+```
+or
+```go
+	allowancePayload, err := erc20Clause.TokenAllowance(fromaddress)
+	if err != nil {
+		fmt.Printf("cannot create pyaload for allowance: %v", err)
+	}
+	fmt.Println("erc20 allowance payload: ", hex.EncodeToString(allowancePayload))
+```
